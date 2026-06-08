@@ -2664,5 +2664,36 @@ const nextWeek2 = new Date(today); nextWeek2.setDate(today.getDate() + 10);
 document.getElementById('date-from').value = nextWeek.toISOString().split('T')[0];
 document.getElementById('date-to').value = nextWeek2.toISOString().split('T')[0];
 </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('form').forEach(f => {
+    f.addEventListener('submit', e => e.preventDefault());
+  });
+
+  ['login-email','reg-email'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el){
+      el.setAttribute('autocomplete','off');
+      el.addEventListener('keydown', function(e){
+        e.stopPropagation();
+      });
+    }
+  });
+
+  window.doLogin = window.doLogin || function(){
+    try { showPage('home'); } catch(e){}
+  };
+
+  window.doRegister = window.doRegister || function(){
+    try { showPage('home'); } catch(e){}
+  };
+
+  window.skipLogin = function(){
+    try { showPage('home'); } catch(e){}
+  };
+});
+</script>
+
 </body>
 </html>
