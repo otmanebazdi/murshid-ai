@@ -1008,13 +1008,15 @@ footer span { color: var(--gold-light); }
   padding: 10px 14px; font-size: 13px;
   margin-bottom: 12px; display: none;
 }
-.skip-link {
-  display: block; margin-top: 12px;
+.skip-link-btn {
+  display: block; margin: 0 auto;
+  background: none; border: none;
   color: var(--text-mid); font-size: 13px;
   text-decoration: underline; cursor: pointer;
-  opacity: 0.7;
+  opacity: 0.7; font-family: 'Tajawal', sans-serif;
+  padding: 4px 8px;
 }
-.skip-link:hover { opacity: 1; }
+.skip-link-btn:hover { opacity: 1; color: var(--green); }
 
 /* ====== PRICING PAGE ====== */
 #page-pricing { min-height: 100vh; padding: 0 0 80px; }
@@ -1218,50 +1220,70 @@ footer span { color: var(--gold-light); }
   <div class="login-card">
     <div class="login-logo">🕌</div>
     <div class="login-title">MURSHID AI</div>
-    <div class="login-subtitle" id="login-subtitle">مرشدك السياحي الذكي في المغرب 🇲🇦</div>
+    <div class="login-subtitle">مرشدك السياحي الذكي في المغرب 🇲🇦</div>
 
     <div class="login-tabs">
-      <button class="login-tab active" onclick="switchLoginTab('login')" id="tab-login">تسجيل الدخول</button>
-      <button class="login-tab" onclick="switchLoginTab('register')" id="tab-register">إنشاء حساب</button>
+      <button type="button" class="login-tab active" id="tab-login"
+        onclick="switchLoginTab(event,'login')">تسجيل الدخول</button>
+      <button type="button" class="login-tab" id="tab-register"
+        onclick="switchLoginTab(event,'register')">إنشاء حساب</button>
     </div>
 
     <div id="login-error" class="login-error"></div>
 
-    <!-- Login Form -->
+    <!-- === Login Form === -->
     <div id="form-login">
       <div class="login-social">
-        <button class="social-btn" onclick="loginWithGoogle()">🌐 Google</button>
-        <button class="social-btn" onclick="loginWithFacebook()">📘 Facebook</button>
+        <button type="button" class="social-btn"
+          onclick="loginWithProvider(event,'Google')">🌐 Google</button>
+        <button type="button" class="social-btn"
+          onclick="loginWithProvider(event,'Facebook')">📘 Facebook</button>
       </div>
       <div class="login-divider">— أو بالبريد الإلكتروني —</div>
       <div class="login-form-group">
-        <label class="login-label">البريد الإلكتروني</label>
-        <input type="email" class="login-input ltr-input" id="login-email" placeholder="email@example.com">
+        <label class="login-label" for="login-email">البريد الإلكتروني</label>
+        <input type="email" class="login-input ltr-input" id="login-email"
+          placeholder="email@example.com" autocomplete="email"
+          onkeydown="if(event.key==='Enter'){event.preventDefault();doLogin();}">
       </div>
       <div class="login-form-group">
-        <label class="login-label">كلمة المرور</label>
-        <input type="password" class="login-input ltr-input" id="login-password" placeholder="••••••••">
+        <label class="login-label" for="login-password">كلمة المرور</label>
+        <input type="password" class="login-input ltr-input" id="login-password"
+          placeholder="••••••••" autocomplete="current-password"
+          onkeydown="if(event.key==='Enter'){event.preventDefault();doLogin();}">
       </div>
-      <button class="login-btn" onclick="doLogin()">🚀 تسجيل الدخول</button>
-      <span class="skip-link" onclick="skipLogin()">متابعة بدون حساب ←</span>
+      <button type="button" class="login-btn" onclick="doLogin()">
+        🚀 تسجيل الدخول
+      </button>
+      <div class="login-divider" style="margin:14px 0 0">
+        <button type="button" class="skip-link-btn" onclick="skipLogin()">
+          متابعة بدون حساب ←
+        </button>
+      </div>
     </div>
 
-    <!-- Register Form -->
+    <!-- === Register Form === -->
     <div id="form-register" style="display:none">
       <div class="login-form-group">
-        <label class="login-label">الاسم الكامل</label>
-        <input type="text" class="login-input" id="reg-name" placeholder="اسمك الكامل">
+        <label class="login-label" for="reg-name">الاسم الكامل</label>
+        <input type="text" class="login-input" id="reg-name"
+          placeholder="اسمك الكامل" autocomplete="name"
+          onkeydown="if(event.key==='Enter'){event.preventDefault();doRegister();}">
       </div>
       <div class="login-form-group">
-        <label class="login-label">البريد الإلكتروني</label>
-        <input type="email" class="login-input ltr-input" id="reg-email" placeholder="email@example.com">
+        <label class="login-label" for="reg-email">البريد الإلكتروني</label>
+        <input type="email" class="login-input ltr-input" id="reg-email"
+          placeholder="email@example.com" autocomplete="email"
+          onkeydown="if(event.key==='Enter'){event.preventDefault();doRegister();}">
       </div>
       <div class="login-form-group">
-        <label class="login-label">كلمة المرور</label>
-        <input type="password" class="login-input ltr-input" id="reg-password" placeholder="8 أحرف على الأقل">
+        <label class="login-label" for="reg-password">كلمة المرور</label>
+        <input type="password" class="login-input ltr-input" id="reg-password"
+          placeholder="8 أحرف على الأقل" autocomplete="new-password"
+          onkeydown="if(event.key==='Enter'){event.preventDefault();doRegister();}">
       </div>
       <div class="login-form-group">
-        <label class="login-label">البلد</label>
+        <label class="login-label" for="reg-country">البلد</label>
         <select class="login-input" id="reg-country">
           <option value="">اختر بلدك</option>
           <option value="MA">🇲🇦 المغرب</option>
@@ -1275,8 +1297,12 @@ footer span { color: var(--gold-light); }
           <option value="OTHER">🌍 أخرى</option>
         </select>
       </div>
-      <button class="login-btn" onclick="doRegister()">✨ إنشاء الحساب</button>
-      <div class="login-footer-txt">بالتسجيل أنت توافق على <a href="#">شروط الاستخدام</a></div>
+      <button type="button" class="login-btn" onclick="doRegister()">
+        ✨ إنشاء الحساب
+      </button>
+      <div class="login-footer-txt">
+        بالتسجيل أنت توافق على شروط الاستخدام
+      </div>
     </div>
   </div>
 </div>
@@ -1307,7 +1333,7 @@ footer span { color: var(--gold-light); }
         <li><span class="feat-x">❌</span> حجوزات مباشرة</li>
         <li><span class="feat-x">❌</span> إعلانات مخفية</li>
       </ul>
-      <button class="plan-btn plan-btn-free" onclick="choosePlan('free')">ابدأ مجاناً</button>
+      <button type="button" class="plan-btn plan-btn-free" onclick="choosePlan('free')">ابدأ مجاناً</button>
     </div>
 
     <!-- PRO -->
@@ -1327,7 +1353,7 @@ footer span { color: var(--gold-light); }
         <li><span class="feat-check">✅</span> بدون إعلانات</li>
         <li><span class="feat-check">✅</span> دعم أولوي 24/7</li>
       </ul>
-      <button class="plan-btn plan-btn-pro" onclick="choosePlan('premium')">🚀 ابدأ التجربة المجانية</button>
+      <button type="button" class="plan-btn plan-btn-pro" onclick="choosePlan('premium')">🚀 ابدأ التجربة المجانية</button>
     </div>
 
     <!-- BUSINESS -->
@@ -1347,7 +1373,7 @@ footer span { color: var(--gold-light); }
         <li><span class="feat-check">✅</span> شراكات تسويقية</li>
         <li><span class="feat-check">✅</span> مدير حساب مخصص</li>
       </ul>
-      <button class="plan-btn plan-btn-biz" onclick="choosePlan('business')">📞 تواصل معنا</button>
+      <button type="button" class="plan-btn plan-btn-biz" onclick="choosePlan('business')">📞 تواصل معنا</button>
     </div>
   </div>
 
@@ -1381,13 +1407,13 @@ footer span { color: var(--gold-light); }
         <div class="revenue-desc">رؤى وتحليلات سياحية익익 للشركاء والباحثين</div>
       </div>
     </div>
-    <button class="pricing-back-btn" onclick="goToHome()">← العودة للصفحة الرئيسية</button>
+    <button type="button" class="pricing-back-btn" onclick="goToHome()">← العودة للصفحة الرئيسية</button>
   </div>
 </div>
 
 <header id="main-header" style="display:none">
   <div class="header-inner">
-    <a href="#" class="logo" onclick="showPage('home')">
+    <a href="javascript:void(0)" class="logo" onclick="if(document.getElementById('page-home')) showPage('home')">
       <div class="logo-icon">🕌</div>
       <div class="logo-text">
         <h1>MURSHID AI</h1>
@@ -1395,13 +1421,13 @@ footer span { color: var(--gold-light); }
       </div>
     </a>
     <div style="display:flex;align-items:center;gap:10px">
-      <button class="upgrade-btn" onclick="showPage('pricing')">⭐ ترقية</button>
+      <button type="button" class="upgrade-btn" onclick="showPage('pricing')">⭐ ترقية</button>
       <div id="user-badge-container" style="display:flex;align-items:center;gap:8px">
         <div class="user-badge" id="user-badge">
           <div class="avatar">👤</div>
           <span id="user-name-display">ضيف</span>
         </div>
-        <button class="logout-btn" onclick="doLogout()">خروج</button>
+        <button type="button" class="logout-btn" onclick="doLogout()">خروج</button>
       </div>
       <div class="lang-switcher">
         <button class="lang-btn active" onclick="setLang('ar')">AR</button>
@@ -1854,7 +1880,10 @@ function setLang(lang) {
 // ====== PAGE & VIEW SWITCH ======
 function showPage(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + page).classList.add('active');
+  const target = document.getElementById('page-' + page);
+  if (target) target.classList.add('active');
+  const header = document.getElementById('main-header');
+  if (header) header.style.display = (page === 'login') ? 'none' : 'block';
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -2525,47 +2554,52 @@ function submitFeedback() {
 // ====== AUTH & LOGIN ======
 let currentUser = null;
 
-function switchLoginTab(tab) {
-  document.getElementById('form-login').style.display = tab === 'login' ? 'block' : 'none';
-  document.getElementById('form-register').style.display = tab === 'register' ? 'block' : 'none';
+function switchLoginTab(e, tab) {
+  if (e) { e.preventDefault(); e.stopPropagation(); }
+  document.getElementById('form-login').style.display   = (tab === 'login')    ? 'block' : 'none';
+  document.getElementById('form-register').style.display = (tab === 'register') ? 'block' : 'none';
   document.getElementById('tab-login').classList.toggle('active', tab === 'login');
   document.getElementById('tab-register').classList.toggle('active', tab === 'register');
-  document.getElementById('login-error').style.display = 'none';
+  hideLoginError();
 }
 
 function showLoginError(msg) {
   const el = document.getElementById('login-error');
+  if (!el) return;
   el.textContent = msg;
   el.style.display = 'block';
 }
+function hideLoginError() {
+  const el = document.getElementById('login-error');
+  if (el) el.style.display = 'none';
+}
 
 function doLogin() {
-  const email = document.getElementById('login-email').value.trim();
-  const pass = document.getElementById('login-password').value;
+  hideLoginError();
+  const email = (document.getElementById('login-email').value || '').trim();
+  const pass  = (document.getElementById('login-password').value || '');
   if (!email || !pass) { showLoginError('الرجاء تعبئة جميع الحقول'); return; }
-  if (!email.includes('@')) { showLoginError('البريد الإلكتروني غير صحيح'); return; }
+  if (!email.includes('@') || !email.includes('.')) { showLoginError('البريد الإلكتروني غير صحيح'); return; }
   if (pass.length < 6) { showLoginError('كلمة المرور يجب أن تكون 6 أحرف على الأقل'); return; }
-  // Simulate login success
   const name = email.split('@')[0];
   loginSuccess(name, 'free');
 }
 
 function doRegister() {
-  const name = document.getElementById('reg-name').value.trim();
-  const email = document.getElementById('reg-email').value.trim();
-  const pass = document.getElementById('reg-password').value;
-  const country = document.getElementById('reg-country').value;
-  if (!name || !email || !pass) { showLoginError('الرجاء تعبئة جميع الحقول'); return; }
-  if (!email.includes('@')) { showLoginError('البريد الإلكتروني غير صحيح'); return; }
+  hideLoginError();
+  const name    = (document.getElementById('reg-name').value    || '').trim();
+  const email   = (document.getElementById('reg-email').value   || '').trim();
+  const pass    = (document.getElementById('reg-password').value || '');
+  if (!name)  { showLoginError('الرجاء إدخال الاسم الكامل'); return; }
+  if (!email) { showLoginError('الرجاء إدخال البريد الإلكتروني'); return; }
+  if (!email.includes('@') || !email.includes('.')) { showLoginError('البريد الإلكتروني غير صحيح'); return; }
   if (pass.length < 8) { showLoginError('كلمة المرور يجب أن تكون 8 أحرف على الأقل'); return; }
   loginSuccess(name, 'free');
 }
 
-function loginWithGoogle() {
-  loginSuccess('مستخدم Google', 'free');
-}
-function loginWithFacebook() {
-  loginSuccess('مستخدم Facebook', 'free');
+function loginWithProvider(e, provider) {
+  if (e) { e.preventDefault(); e.stopPropagation(); }
+  loginSuccess('مستخدم ' + provider, 'free');
 }
 
 function skipLogin() {
@@ -2573,21 +2607,18 @@ function skipLogin() {
 }
 
 function loginSuccess(name, plan) {
-  currentUser = { name, plan };
-  localStorage.setItem('murshid_user', JSON.stringify(currentUser));
-  document.getElementById('user-name-display').textContent = name;
-  document.getElementById('main-header').style.display = 'block';
+  currentUser = { name: name, plan: plan };
+  try { localStorage.setItem('murshid_user', JSON.stringify(currentUser)); } catch(ex) {}
+  const badge = document.getElementById('user-name-display');
+  if (badge) badge.textContent = name;
   showPage('home');
-  showToast('مرحباً ' + name + '! 🎉');
+  setTimeout(function() { showToast('مرحباً ' + name + '! 🎉'); }, 300);
 }
 
 function doLogout() {
   currentUser = null;
-  localStorage.removeItem('murshid_user');
-  document.getElementById('main-header').style.display = 'none';
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-login').classList.add('active');
-  window.scrollTo({ top: 0 });
+  try { localStorage.removeItem('murshid_user'); } catch(ex) {}
+  showPage('login');
 }
 
 function goToHome() {
@@ -2596,46 +2627,35 @@ function goToHome() {
 
 function choosePlan(plan) {
   if (plan === 'free') {
-    if (currentUser) { currentUser.plan = 'free'; }
+    if (currentUser) currentUser.plan = 'free';
     showPage('home');
     showToast('أنت على الخطة المجانية ✅');
   } else if (plan === 'premium') {
     showToast('سيتم تفعيل الخطة Premium قريباً! 🚀');
-    setTimeout(() => showPage('home'), 1500);
+    setTimeout(function() { showPage('home'); }, 1800);
   } else if (plan === 'business') {
     showToast('تواصل معنا: murshidai@contact.ma 📧');
   }
 }
 
-// ====== OVERRIDE showPage to handle header ======
-const _originalShowPage = showPage;
-function showPage(page) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + page).classList.add('active');
-  // Show/hide header
-  const header = document.getElementById('main-header');
-  if (page === 'login') {
-    header.style.display = 'none';
-  } else {
-    header.style.display = 'block';
-  }
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+
 
 // ====== INIT ======
-// Check if user already logged in
 (function() {
-  const saved = localStorage.getItem('murshid_user');
-  if (saved) {
-    try {
+  try {
+    const saved = localStorage.getItem('murshid_user');
+    if (saved) {
       const u = JSON.parse(saved);
-      currentUser = u;
-      document.getElementById('user-name-display').textContent = u.name;
-      document.getElementById('main-header').style.display = 'block';
-      document.getElementById('page-login').classList.remove('active');
-      document.getElementById('page-home').classList.add('active');
-    } catch(e) { /* ignore */ }
-  }
+      if (u && u.name) {
+        currentUser = u;
+        const badge = document.getElementById('user-name-display');
+        if (badge) badge.textContent = u.name;
+        showPage('home');
+        return;
+      }
+    }
+  } catch(e) { /* start fresh */ }
+  showPage('login');
 })();
 setLang('ar');
 const today = new Date();
